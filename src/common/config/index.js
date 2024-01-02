@@ -1,5 +1,5 @@
-let env = process.env
-let url = ''
+let env = {}
+let url = '/server'
 if (env.REACT_APP_MODE === 'test') {
   // 测试服
   url = '/api'

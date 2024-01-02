@@ -114,7 +114,7 @@ const BasicForm = (props) => {
           >
             <Radio.Group>
               <Radio value={0}>管理员</Radio>
-              <Radio value={1}>游客</Radio>
+              <Radio value={1}>操作员</Radio>
             </Radio.Group>
           </Form.Item>
           <Form.Item label='邮箱' name='email' rules={rules.email}>
@@ -130,13 +130,13 @@ const BasicForm = (props) => {
           >
             <Input.Password placeholder='请确认密码' />
           </Form.Item>
-          <Form.Item label='国籍' name='nation' rules={rules.nation}>
+          {/* <Form.Item label='职位' name='nation' rules={rules.nation}>
             <Select placeholder='请选择国籍'>
               <Select.Option value='china'>中国</Select.Option>
               <Select.Option value='usa'>美国</Select.Option>
             </Select>
-          </Form.Item>
-          <Form.Item
+          </Form.Item> */}
+          {/* <Form.Item
             name='hobby'
             label='爱好'
             rules={rules.hobby}
@@ -149,7 +149,7 @@ const BasicForm = (props) => {
                 </Checkbox>
               ))}
             </Checkbox.Group>
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item
             name='agree'
             valuePropName='checked'

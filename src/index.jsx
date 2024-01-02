@@ -8,6 +8,7 @@ import { GlobalStyled } from '@/assets/styled'
 import '@/common/libs'
 import App from './App'
 import store from './store'
+import 'antd/dist/antd.css'
 
 const renderElement = document.getElementById('root')
 const RenderNode = () => {

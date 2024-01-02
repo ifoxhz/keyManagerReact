@@ -12,6 +12,7 @@
 /build
 /docs
 /dockerimage
+/dist
 
 # misc
 .DS_Store

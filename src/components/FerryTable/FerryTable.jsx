@@ -48,9 +48,13 @@ const FerryTable = (props, ref) => {
     page: 1
   })
 
-//   const  CurRecord = useSelector((state) => {
-//     return state.get("editRecord")
-//  }); // 从 Redux store 获取数据
+
+  const storeRecord = useSelector((state) => {
+    return state.get("editRecord")
+  }); // 从 Redux store 获取数据
+
+  let curRecord = storeRecord.editItem
+
 
   const onSelectChange = (currSelectedRowKeys, selectedRow) => {
     if (
@@ -84,7 +88,7 @@ const FerryTable = (props, ref) => {
 
     if(url.includes("/permit")){
       if (!record){
-        record = editItem
+        record = curRecord
       }
       console.log("fetch data permit",record)
       serverUrl = serverUrl + `&permitProdId=${record.id}`
@@ -98,6 +102,16 @@ const FerryTable = (props, ref) => {
           'Content-Type': 'application/json'
         },
       })
+
+      if (response.status === 401){
+        notification.error({
+          message: '系统通知',
+          description: `未登录，或者登录已失效！`,
+        });
+        window.localStorage.islogin = '0'
+        return
+      }
+
       const result = await response.json();
       // const reData = JSON.parse(result)
       let reData = result
@@ -146,9 +160,10 @@ const FerryTable = (props, ref) => {
   }
 
   useEffect(() => {
+    curRecord = storeRecord.editItem
     fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query])
+  }, [storeRecord])
 
   useEffect(() => {
     let arr = []
@@ -160,6 +175,14 @@ const FerryTable = (props, ref) => {
     setSelectedRowKeys(arr)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectTotalKeys])
+
+
+  useEffect(() => {
+    fetchData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query])
+
+
 
   const delRow = async (row, api) => {
     console.log("delete row",row)
