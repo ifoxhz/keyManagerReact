@@ -155,6 +155,8 @@ const TableForm = (props) => {
         });
       })
     setLoading(false)
+    const { resetFields } = form;
+    resetFields()
   }
 
   const rules = {

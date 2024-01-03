@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { log } from '@ferrydjing/utils'
 import { Form, Button, Input, Spin, notification } from 'antd'
+import { useSelector} from 'react-redux'
 
 const layout = {
   labelCol: { span: 6 },
@@ -12,6 +13,12 @@ const TableForm = (props) => {
   const [loading, setLoading] = useState(false)
   const [status, setStatus] = useState(0)
   const [form] = Form.useForm()
+
+  const editRecord = useSelector((state) => {
+    return state.get("editRecord")
+  }); // 从 Redux store 获取数据
+  console.log("permit TableForm useSelector::::",editRecord)
+  const editItem = editRecord.editItem
 
   const save = async (values) => {
     setLoading(true)
@@ -50,6 +57,8 @@ const TableForm = (props) => {
         });
       })
     setLoading(false)
+    const { resetFields } = form;
+    resetFields()
   }
 
   const rules = {
@@ -104,7 +113,7 @@ const TableForm = (props) => {
         <Form.Item label='许可证描述' name='permitlabel' rules={rules.name}>
           <Input />
         </Form.Item>
-        <Form.Item label='permitProdId' name='permitProdId' initialValue={ProductId}  style={{ display: 'none' }}>
+        <Form.Item label='permitProdId' name='permitProdId' initialValue={editItem.id}  style={{ display: 'none' }}>
           <Input />
         </Form.Item>
         <Form.Item label='设备总量' name='permittotal' rules={rules.count}>

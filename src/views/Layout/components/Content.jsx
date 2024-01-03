@@ -7,7 +7,7 @@ import dayjs from 'dayjs'
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  GithubFilled
+  ProfileFilled
 } from '@ant-design/icons'
 import Avatar from './components/Avatar'
 import { FerryTabs } from '_c'
@@ -100,7 +100,7 @@ const Content = (props) => {
           </CollapsedWrap>
           {renderBreadcrumb(location)}
           <GithubWrap>
-            <GithubFilled style={{ fontSize: 20, marginLeft: 'auto' }} />
+            <ProfileFilled style={{ fontSize: 20, marginLeft: 'auto' }} />
           </GithubWrap>
           <Avatar />
         </HeaderContent>

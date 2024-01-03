@@ -11,7 +11,7 @@ RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d/
 
 # 将静态页面的内容复制到容器中的默认 HTML 目录
-COPY ./docs/ /usr/share/nginx/html/
+COPY ./dist/ /usr/share/nginx/html/
 
 # 暴露容器的 80 端口
 EXPOSE 80
