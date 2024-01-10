@@ -4,8 +4,7 @@ import * as Styled from './style'
 import useLogin from '../../../../hook/useLogin'
 
 const Login = (props) => {
-  console.log("Login",props.setIsAuthenticated ?"true":"false")
-  console.log("Login",props.isAuthenticated ?"true":"false")
+
   console.log("login",props)
   const { save, rules, form, defaultVal } = useLogin(props)
 

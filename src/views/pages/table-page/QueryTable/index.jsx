@@ -6,6 +6,7 @@ import { FerryTable } from '_c'
 import * as Styled from './style'
 import TableForm from './components/TableForm'
 import ProdPermit from '@/views/pages/prodpermit'
+import { useHistory } from 'react-router-dom'
 
 
 const QueryTable = (props) => {
@@ -64,10 +65,23 @@ const QueryTable = (props) => {
 
   // const [EditRecord,setEditRecord] =useState(null)
 
+  const [redLogin, setRedLogin] = useState(false)
+
   const tableRef = useRef(null)
   const dispatch = useDispatch()
 
   useEffect(() => {}, [])
+
+  useEffect(() => {
+    if (redLogin){
+      console.log("redirect login")
+      history = useHistory()
+      history.push('/login')
+    }
+    return ( )=>{
+      setRedLogin(false)
+    }
+  }, [redLogin])
 
   const handleDelete = (record) => {
     setDelRecord(record);
@@ -91,7 +105,7 @@ const QueryTable = (props) => {
   const handleConfirmDelete = () => {
     // const newData = data.filter((item) => item.id !== selectedRecord.id);
     console.log("execute delete",DelRecord)
-    tableRef && tableRef.current.del(DelRecord,"/server/product/delete")
+    tableRef && tableRef.current.del(DelRecord,"/api/product/delete")
     // setData(newData);
     setModalvisible(false);
   };
@@ -149,7 +163,7 @@ const QueryTable = (props) => {
               type='primary'
               icon={<RedoOutlined />}
               onClick={() => {
-                tableRef && tableRef.current.refresh("/server/product/get")
+                tableRef && tableRef.current.refresh("/api/product/get")
               }}
             >
               刷新
@@ -179,7 +193,7 @@ const QueryTable = (props) => {
           columns={columns}
           ref={tableRef}
           checked
-          url='/server/product'
+          url='/api/product'
         ></FerryTable>
       </Styled.Content>
       <Modal
@@ -198,7 +212,7 @@ const QueryTable = (props) => {
             }}
             onConfirm={() => {
               setVisible(false)
-              tableRef && tableRef.current.refresh("/server/product/get")
+              tableRef && tableRef.current.refresh("/api/product/get")
             }}
           ></TableForm>
         ) : null}

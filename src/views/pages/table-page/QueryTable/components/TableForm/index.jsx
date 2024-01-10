@@ -115,7 +115,7 @@ const TableForm = (props) => {
     //   setLoading(false)
     //   setStatus(1)
     // }, 2000)
-    fetch('/server/product/create', {
+    fetch('/api/product/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

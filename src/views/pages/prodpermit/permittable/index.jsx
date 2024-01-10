@@ -91,7 +91,7 @@ const PermitTable = (props) => {
   const handleConfirmDelete = () => {
     // const newData = data.filter((item) => item.id !== selectedRecord.id);
     console.log("execute permit delete",DelRecord)
-    tableRef && tableRef.current.del(DelRecord,"/server/permit/delete")
+    tableRef && tableRef.current.del(DelRecord,"/api/permit/delete")
     // setData(newData);
     setModalvisible(false);
   };
@@ -176,7 +176,7 @@ const PermitTable = (props) => {
           columns={columns}
           ref={tableRef}
           checked
-          url='/server/permit'
+          url='/api/permit'
           editItem = {editItem}
         ></FerryTable>
       </Styled.Content>

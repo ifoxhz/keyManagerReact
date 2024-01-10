@@ -4,8 +4,9 @@ import { message, notification, Form } from 'antd'
 import { useHistory } from 'react-router-dom'
 
 async function verifyUser(user){
-  return fetch('/server/login', {
+  return fetch('/api/auth/login', {
     method: 'POST',
+    // credentials: 'omit',
     headers: {
       'Content-Type': 'application/json'
     },
@@ -50,27 +51,36 @@ const useLogin = (props) => {
   const save = async (values) => {
     setLoading(true)
     verifyUser({name:values.username,password:values.password})
-      .then(response => response.json())
+      .then(response => {
+
+        if (response.status === 200){
+          return response.json()
+        }else{
+         return  Promise.resolve({UserValid:false})
+        }
+      })
       .then(data => {
           // 在这里处理响应的数据
           console.log("Login return ",data);
           if (data.UserValid){
-            console.log("父组件setIsAuthenticated调用")
+            console.log("Login ok")
             // setIsAuthenticated(true)
             window.localStorage.islogin = '1'
-            console.log("父组件setIsAuthenticated调用over")
+
             setLoading(false)
             setStatus(1)
-            console.log("父组件setStatus调用over")
 
           }else{
             setLoading(false)
             message.warning('用户名或者密码错误')
+            window.localStorage.islogin = '0'
+            history.push('/login')
           }
         
       })
       .catch(error => {
         // 在这里处理错误
+        window.localStorage.islogin = '0'
         console.error("Login",error);
         setLoading(false)
         message.warning('登录服务错误，请重试')

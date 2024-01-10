@@ -113,7 +113,7 @@ const Content = (props) => {
       >
         {props.children}
         <Footer>
-          YONGKPS ©{dayjs().format('YYYY')} Created by zhengyong@etsnet.com
+        KMS ©{dayjs().format('YYYY')} Created by zhengyong@etsnet.com
         </Footer>
       </Main>
     </ContentWrap>

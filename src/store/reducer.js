@@ -28,9 +28,24 @@ const editRecordReducer = (state = editRecordDef, action) => {
   }
 };
 
+
+const sessionOutReducer = (state = false, action) => {
+  console.log("sessionOutReducer",action)
+  switch (action.type) {
+    case 'SET_SESSION_OUT':
+      return {
+        ...state,
+        SessionOut: action.payload.sessionout
+      };
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   base: BaseReducer,
   layout: LayoutReducer,
   button: ButtonReducer,
-  editRecord:editRecordReducer
+  editRecord:editRecordReducer,
+  SessionOut:sessionOutReducer
 })

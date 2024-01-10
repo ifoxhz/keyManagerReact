@@ -20,7 +20,7 @@ const TableForm = (props) => {
     //   setLoading(false)
     //   setStatus(1)
     // }, 2000)
-    fetch('/server/permit/create', {
+    fetch('/api/permit/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

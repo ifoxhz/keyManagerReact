@@ -18,16 +18,14 @@ const TableForm = (props) => {
     return state.get("editRecord")
   }); // 从 Redux store 获取数据
   console.log("permit TableForm useSelector::::",editRecord)
-  const editItem = editRecord.editItem
+  // const editItem = editRecord.editItem
 
   const save = async (values) => {
     setLoading(true)
     log("create permit form:",values)
-    // setTimeout(() => {
-    //   setLoading(false)
-    //   setStatus(1)
-    // }, 2000)
-    fetch('/server/permit/create', {
+    values.permitProdId = editRecord.editItem.id
+
+    fetch('/api/permit/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -104,6 +102,10 @@ const TableForm = (props) => {
     }
   }, [onConfirm, status])
 
+  // useEffect(() => {
+  //   setProdId(editRecord.editItem.id)
+  // }, [editRecord])
+
   return (
     <Spin tip='加载中' spinning={loading}>
       <Form {...layout} form={form} onFinish={save}>
@@ -113,9 +115,9 @@ const TableForm = (props) => {
         <Form.Item label='许可证描述' name='permitlabel' rules={rules.name}>
           <Input />
         </Form.Item>
-        <Form.Item label='permitProdId' name='permitProdId' initialValue={editItem.id}  style={{ display: 'none' }}>
-          <Input />
-        </Form.Item>
+        {/* <Form.Item label='permitProdId' name='permitProdId' hidden={true} >
+          <Input type="hidden" name='permitProdId' value = {editRecord.editItem.id}/>
+        </Form.Item> */}
         <Form.Item label='设备总量' name='permittotal' rules={rules.count}>
           <Input />
         </Form.Item>

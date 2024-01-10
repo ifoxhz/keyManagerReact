@@ -26,7 +26,7 @@ const LoginMobile = (props) => {
           注册
         </span>
       </div>
-      <h1>欢迎登录YONGKPS</h1>
+      <h1>欢迎登录KMS</h1>
       <Form form={form} onFinish={save}>
         <Form.Item
           name='username'

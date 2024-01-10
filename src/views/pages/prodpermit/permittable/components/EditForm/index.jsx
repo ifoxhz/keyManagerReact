@@ -20,7 +20,7 @@ const EditForm = (props) => {
     //   setLoading(false)
     //   setStatus(1)
     // }, 2000)
-    fetch('/server/permit/update', {
+    fetch('/api/permit/update', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

@@ -48,7 +48,7 @@ const FakeDevice = (props) => {
   const handleConfirmDelete = () => {
     // const newData = data.filter((item) => item.id !== selectedRecord.id);
     console.log("execute permit delete",DelRecord)
-    tableRef && tableRef.current.del(DelRecord,"/server/permit/delete")
+    tableRef && tableRef.current.del(DelRecord,"/api/permit/delete")
     // setData(newData);
     setModalvisible(false);
   };
@@ -65,7 +65,7 @@ const FakeDevice = (props) => {
 
   const getPermitNameList = async()=> {
     try{
-     const response = await  fetch("/server/permitdevice/namelist", {
+     const response = await  fetch("/api/permit/namelist", {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -94,7 +94,7 @@ const FakeDevice = (props) => {
   const CreatePermitDevice = async(values)=> {
     try{
       values.permitid = 10
-     const response = await  fetch("/server/permitdevice/create", {
+     const response = await  fetch("/api/permitdevice/create", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

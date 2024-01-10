@@ -18,6 +18,12 @@ const layout = {
   wrapperCol: { span: 12 }
 }
 const rules = {
+  name: [
+    {
+      required: true,
+      message: '必填'
+    }
+  ],
   role: [
     {
       required: true,
@@ -90,22 +96,67 @@ const BasicForm = (props) => {
   const [visible, setVisible] = useState(false)
   const [form] = Form.useForm()
 
-  const save = (values) => {
-    log(values)
+  const save = async (values) => {
     setLoading(true)
-    setTimeout(() => {
-      setLoading(false)
-      notification.success({
-        message: '操作成功'
+    log("add user form:",values)
+    // setTimeout(() => {
+    //   setLoading(false)
+    //   setStatus(1)
+    // }, 2000)
+    fetch('/api/user/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(values)
+     })
+      .then( (response) =>{
+        if (response.status === 200) {
+          // setStatus(1)
+        } else {
+          notification.error({
+            message: '管理通知',
+            description: `添加用户失败，请检查输入的产品参数:${values}`,
+          });
+          // setStatus(0)
+        }
+        setLoading(false)
+        })
+      .catch( (err) =>{
+        console.log(err)
+        setLoading(false)
+        // setStatus(0)
+        notification.error({
+          message: '管理通知',
+          description: `添加用户失败，后台服务异常`,
+        });
       })
-    }, 2000)
+    setLoading(false)
   }
+
+
+
+  // const save = (values) => {
+  //   log(values)
+  //   setLoading(true)
+  //   setTimeout(() => {
+  //     setLoading(false)
+  //     notification.success({
+  //       message: '操作成功'
+  //     })
+  //   }, 2000)
+  // }
 
   return (
     <Styled.Wrap>
-      <h1>基础表单</h1>
+      <h1>用户管理</h1>
       <Spin spinning={loading}>
         <Form {...layout} form={form} onFinish={save}>
+
+        <Form.Item label='用户名' name='name' rules={rules.name}>
+            <Input placeholder='请输入用户名' />
+        </Form.Item>
+
           <Form.Item
             label='角色'
             name='role'
@@ -167,7 +218,7 @@ const BasicForm = (props) => {
                     setVisible(true)
                   }}
                 >
-                  《BearBear用户协议》
+                  《KMS用户协议》
                 </Button>
               </Checkbox>
             </Checkbox.Group>

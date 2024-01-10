@@ -1,5 +1,5 @@
 let env = {}
-let url = '/server'
+let url = '/api'
 if (env.REACT_APP_MODE === 'test') {
   // 测试服
   url = '/api'
@@ -7,7 +7,7 @@ if (env.REACT_APP_MODE === 'test') {
   // 正式服
   url = '/api'
 } else {
-  url = '/server'
+  url = '/api'
 }
 
 export const baseUrl = url

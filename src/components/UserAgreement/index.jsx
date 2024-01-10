@@ -18,11 +18,11 @@ const UserAgreement = (props) => {
         <Styled.AgreementWrap>
           <h3>用户协议</h3>
           <p>
-            YONGKPS（除非特别说明，本服务协议所提及的YONGKPS包括
+            KMS（除非特别说明，本服务协议所提及的KMS包括
             网站）为您提供的一切服务受本服务协议项下条款和条件的约束。
           </p>
           <p>
-            使用YONGKPS也就意味着您同意本服务协议及YONGKPS对其不时所做的修订。
+            使用KMS也就意味着您同意本服务协议及KMS对其不时所做的修订。
           </p>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit.

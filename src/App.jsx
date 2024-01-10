@@ -6,6 +6,8 @@ import { DefaultLayout, NotFound, Login } from './routers'
 import * as actionCreaters from './store/base/actionCreaters'
 import { PageLoading } from '_c'
 
+import { useLocation, useHistory, Link } from 'react-router-dom'
+
 
 // const PrivateRoute = ({ component: component, ...rest }) => {
 //   const isAuthenticated = window.localStorage.islogin
@@ -69,6 +71,19 @@ const App = () => {
   })
 
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  
+  const SessionOut = useSelector((state) => {
+    return state.get("SessionOut")
+  }); // 从 Redux store 获取数据
+
+  useEffect(() => {
+    if (SessionOut){
+      console.log("sesssout ")
+      // window.location.reload();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [SessionOut])
+
 
   useEffect(() => {
     resizeFn()
@@ -84,16 +99,13 @@ const App = () => {
       <Router>
         <Switch>
           <Route path='/' exact render={() => {
-              console.log("root",window.localStorage.islogin) 
               return (window.localStorage.islogin === '1' ? <Redirect to='/index' />:<Redirect to='/login' />) 
           }} />
           <Route path='/login' component={(props)=><Login {...props} />} />
           <Route path='/404' render={ () => {
-              console.log("404",window.localStorage.islogin) 
               return (window.localStorage.islogin === '1' ?<NotFound /> :<Redirect to='/login' />)
           }} />
           <Route render={(props) =>{
-              console.log("default",window.localStorage.islogin) 
               return (window.localStorage.islogin === '1' ? <DefaultLayout {...props}/> :<Redirect to='/login' />)
           }} />
         </Switch>

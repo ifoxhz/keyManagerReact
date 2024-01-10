@@ -20,6 +20,10 @@ import * as http from '@/api'
 import { stringify } from 'qs'
 import { useSelector} from 'react-redux'
 
+// import {useHistory } from 'react-router-dom'
+
+
+
 const dataDeafaul = []
 // for (let i = 0; i < 60; i++) {
 //   dataDeafaul.push({
@@ -44,10 +48,9 @@ const FerryTable = (props, ref) => {
   })
   const [loading, setLoading] = useState(true)
   const [query, setQuery] = useState({
-    row: 10,
+    row: 50,
     page: 1
   })
-
 
   const storeRecord = useSelector((state) => {
     return state.get("editRecord")
@@ -109,7 +112,13 @@ const FerryTable = (props, ref) => {
           description: `未登录，或者登录已失效！`,
         });
         window.localStorage.islogin = '0'
-        return
+        setLoading(false)
+        setData({
+          ...query,
+          count: 0,
+          list: []
+        })
+        return 
       }
 
       const result = await response.json();

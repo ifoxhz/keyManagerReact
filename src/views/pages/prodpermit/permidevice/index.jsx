@@ -8,7 +8,7 @@ import TableForm from './components/TableForm'
 
 const { Option } = Select;
 
-const url = "/server/permitdevice"
+const url = "/api/permitdevice"
 
 const PermitDevice = (props) => {
   const {editItem} = props
@@ -132,7 +132,7 @@ const PermitDevice = (props) => {
   const handleConfirmDelete = () => {
     // const newData = data.filter((item) => item.id !== selectedRecord.id);
     console.log("execute permit delete",DelRecord)
-    tableRef && tableRef.current.del(DelRecord,"/server/permitdevice/delete")
+    tableRef && tableRef.current.del(DelRecord,"/api/permitdevice/delete")
     // setData(newData);
     setModalvisible(false);
   };
@@ -143,7 +143,7 @@ const PermitDevice = (props) => {
 
   const getPermitNameList = async()=> {
     try{
-     const response = await  fetch("/server/permitdevice/namelist", {
+     const response = await  fetch("/api/permit/namelist", {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -258,7 +258,7 @@ const PermitDevice = (props) => {
           columns={columns}
           ref={tableRef}
           checked
-          url='/server/permitdevice'
+          url='/api/permitdevice'
         ></DeviceTable>
       </Styled.Content>
       <Modal

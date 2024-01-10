@@ -8,7 +8,8 @@ const LogOutClick = () => {
   // 在此处执行你想要触发的函数调用
   console.log('logout clicked');
   window.localStorage.islogin = '0'
-
+  sessionStorage.clear()
+  
 };
 
 const menu = (
@@ -24,7 +25,7 @@ const MyAvartar = () => {
   return (
     <AvatarWrap overlay={menu} width={{ width: 120 }}>
       <DropdownWrap>
-        <span style={{ marginRight: 10 }}>YONGKPS</span>
+        <span style={{ marginRight: 10 }}>KMS</span>
         <Avatar
           icon={<UserOutlined />}
           src='https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png'

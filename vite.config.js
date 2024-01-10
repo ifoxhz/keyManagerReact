@@ -8,12 +8,12 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     proxy: {
-      '/server': {
+      '/api': {
         target: 'http://localhost:4000',
         changeOrigin: true,
         logLevel: 'debug', // 设置日志级别为 debug
         pathRewrite: {
-          '^/server': '/server'
+          '^/api': '/api'
         }
     }},
     hmr: true,
