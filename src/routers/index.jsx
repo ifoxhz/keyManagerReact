@@ -70,6 +70,13 @@ const FakeDevice = lazy(() =>
   )
 )
 
+const CredentTable = lazy(() =>
+  import(
+    /*webpackChunkName: 'table-pages' */ '@/views/pages/credent'
+  )
+)
+
+
 const routes = [
   {
     path: '/index',
@@ -78,6 +85,14 @@ const routes = [
     component: Index,
     title: '产品管理',
     icon: <HomeFilled />,
+  },
+  {
+    path: '/credent',
+    exact: true,
+    name: 'credent',
+    component: CredentTable,
+    title: '证书查询',
+    icon: <ExclamationCircleFilled />
   },
   {
     path: '/fake',

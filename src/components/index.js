@@ -6,6 +6,7 @@ import FerryTabs from './FerryTabs'
 import UserAgreement from './UserAgreement'
 import PageLoading from './PageLoading'
 import DeviceTable from './DeviceTable'
+import ComTable from './comTable'
 
 export {
   Icon,
@@ -15,5 +16,6 @@ export {
   FerryTabs,
   UserAgreement,
   PageLoading,
-  DeviceTable
+  DeviceTable,
+  ComTable
 }
