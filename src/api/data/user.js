@@ -1,13 +1,5 @@
 const { Sequelize,DataTypes} = require('sequelize')
-
-const kpssql = new Sequelize('kpsdatabase', 'root', 'yongkps', {
-    host: 'localhost',
-    dialect: 'mysql',
-    define: {
-        freezeTableName: true
-    }
-});
-
+const kpssql = require("./index.js")
 
 async function CreateUserTable() {
 

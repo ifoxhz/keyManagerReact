@@ -20,6 +20,10 @@ const CredentTable = (props) => {
       dataIndex: 'id'
     },
     {
+      title: '证书ID',
+      dataIndex: 'permitid'
+    },
+    {
       title: 'CID',
       dataIndex: 'cid'
     },
@@ -32,14 +36,14 @@ const CredentTable = (props) => {
       dataIndex: 'usedflag',
       render: (usedflag) => (usedflag ? '是' : '否'),
     },
-    {
-      title: 'CREDENTIAL',
-      dataIndex: 'credential'
-    },
-    {
-      title: 'KP',
-      dataIndex: 'keyprovision'
-    },
+    // {
+    //   title: 'CREDENTIAL',
+    //   dataIndex: 'credential'
+    // },
+    // {
+    //   title: 'KP',
+    //   dataIndex: 'keyprovision'
+    // },
     
     {
       title: '创建时间',

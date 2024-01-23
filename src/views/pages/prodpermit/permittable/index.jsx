@@ -40,7 +40,7 @@ const PermitTable = (props) => {
       dataIndex: 'permitpullcount'
     },
     {
-      title: '已使用',
+      title: '已下载',
       dataIndex: 'permitusedcount'
     },
     {
