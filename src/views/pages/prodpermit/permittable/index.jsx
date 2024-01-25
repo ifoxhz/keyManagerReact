@@ -32,7 +32,7 @@ const PermitTable = (props) => {
       dataIndex: 'permittotal'
     },
     {
-      title: '未使用',
+      title: '未拉取',
       dataIndex: 'permitbalance'
     },
     {
@@ -44,12 +44,20 @@ const PermitTable = (props) => {
       dataIndex: 'permitusedcount'
     },
     {
+      title: '未下载',
+      render: (text, record) => {
+        return (record.permitpullcount - record.permitusedcount)
+      }
+    },
+    {
       title: '异常数',
       dataIndex: 'permiterrorcount'
     },
     {
       title: '状态',
-      dataIndex: 'permitstatus'
+      render: (text, record) => {
+        return ((record.permittotal === record.permitpullcount)? "可用":"创建中")
+      }
     },
     {
       title: '操作',
@@ -220,7 +228,7 @@ const PermitTable = (props) => {
               setEditVisible(false)
               tableRef && tableRef.current.refresh(editItem)
             }}
-            PermitId = {editRecord.id}
+            PermitId = {editRecord}
           ></EditForm>
         ) : null}
       </Modal>

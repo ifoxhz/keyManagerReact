@@ -32,11 +32,15 @@ const QueryTable = (props) => {
     },
     {
       title: '设备总量',
-      dataIndex: 'devicetotal'
+      render: (text, record) => {
+        return (record.devicetotal ? record.devicetotal : 0)
+      }
     },
     {
       title: '设备余额',
-      dataIndex: 'devicebalance'
+      render: (text, record) => {
+        return (record.devicetotal - record.devicebalance)
+      }
     },
     {
       title: '创建时间',

@@ -1,6 +1,6 @@
 import React, { useEffect, useState ,useCallback} from 'react'
 import { log } from '@ferrydjing/utils'
-import { Form, Button, Input, Spin, notification,Radio, Upload } from 'antd'
+import { Form, Button, Input, Spin, notification,Radio, Upload,Select,message } from 'antd'
 import Papa from 'papaparse';
 const { TextArea } = Input;
 
@@ -8,6 +8,25 @@ const layout = {
   labelCol: { span: 6 },
   wrapperCol: { span: 12 }
 }
+
+
+const cvsCheck =(prodkeyText) => {
+    
+  const cvsKey = ['privateKey','appId','model','productType','security']
+  console.log("ProductkeyItem:",prodkeyText)
+  const result = Papa.parse(prodkeyText)
+  // 获取键值对
+  const keyValuePairs = result.data.reduce((reduceKeyPair, item) => {
+      const key = item[0];
+      const value = item[1];
+      reduceKeyPair[key] = value;
+      return reduceKeyPair;
+  }, {});
+
+  console.log("keyValuePairs  pare items:",keyValuePairs)
+  return  cvsKey.find((key) => !keyValuePairs.hasOwnProperty(key))
+}
+
 
 const KeyUploader = ({upData}) => {
   const [fileContent, setFileContent] = useState(null);
@@ -17,23 +36,24 @@ const KeyUploader = ({upData}) => {
     const reader = new FileReader();
     reader.onload = (e) => {
         console.log("read file end:",e.target.result)
+        const cvsRes =  cvsCheck(e.target.result)
+        if (cvsRes){
+          console.log("cvs file lost:",cvsRes)
+          const text = `产品密钥文件缺失参数:${cvsRes}`
+          message.warning(text);
+          return 
+        }
         upData(e.target.result)
-        // Papa.parse(reader, {
-        //   complete: function(results) {
-        //     console.log("papa parse over",results.data); // 处理完毕的 CSV 数据
-        //     setFileContent(results.data)
-        //   }
-        // });
-    }; 
-    reader.readAsText(file.originFileObj || file);
-    // return false 
-    Papa.parse(file.originFileObj || file, {
+        Papa.parse(e.target.result, {
           header: false,
           complete: function(results) {
             console.log("papa parse over",results.data); // 处理完毕的 CSV 数据
             setFileContent(results.data)
-          }
-        });
+        }
+    });
+    }; 
+    reader.readAsText(file.originFileObj || file);
+    // return false 
     return false
   }; 
 
@@ -101,15 +121,53 @@ const TableForm = (props) => {
   // const formRef = useRef(null);
 
 
+
+
+  const cvsCheck =(prodkeyText) => {
+    
+    const cvsKey = ['privateKey','appId','model','productType','security']
+    console.log("ProductkeyItem:",prodkeyText)
+    const result = Papa.parse(prodkeyText)
+    // 获取键值对
+    const keyValuePairs = result.data.reduce((reduceKeyPair, item) => {
+        const key = item[0];
+        const value = item[1];
+        reduceKeyPair[key] = value;
+        return reduceKeyPair;
+    }, {});
+
+    console.log("keyValuePairs  pare items:",keyValuePairs)
+    return  cvsKey.find((key) => !keyValuePairs.hasOwnProperty(key))
+  }
+
+
   const handleSetProdKey = (key) => {
     console.log("call set form key",key)
-    setProdKey(key);
+    const lostKey = cvsCheck(key)
+    if(lostKey){
+      // const text = `产品密钥文件缺失参数:${lostKey}`
+      // message.warning(text);
+      return 
+    }else{
+      setProdKey(key);
+    }
   }
 
 
   const save = async (values) => {
+
+    console.log("save :",prodKey)
+    if(!prodKey){
+      const text = `产品密钥文件缺失!`
+      message.warning(text);
+      return 
+    }
+
     setLoading(true)
-    values.productkey=prodKey
+    form.resetFields()
+
+    values.productkey = prodKey
+    setProdKey(null)
     log("create product form:",values)
     // setTimeout(() => {
     //   setLoading(false)
@@ -212,12 +270,18 @@ const TableForm = (props) => {
         <Form.Item label='产品型号' name='productmodel' rules={rules.name}>
           <Input />
         </Form.Item>
-        <Form.Item label='芯片型号' name='chipmodel' rules={rules.name}>
-          <Input />
+        <Form.Item label='芯片型号' name='chipmodel' >
+          <Select>
+            <Option value="HSC32I1">HSC32I1</Option>
+            <Option value="DK_LX100">DK_LX100</Option>
+            <Option value="WP_LX100">WP_LX100</Option>
+            <Option value="ZX9660">ZX9660</Option>
+            <Option value="CIU98">CIU98</Option>
+          </Select>
         </Form.Item>
         <Form.Item label="是否加密" initialValue="no"  name="isencryp">
             <Radio.Group >
-            <Radio value="yes">是</Radio>
+            <Radio value="yes" disabled>是</Radio>
             <Radio value="no">否</Radio>
           </Radio.Group>
         </Form.Item> 

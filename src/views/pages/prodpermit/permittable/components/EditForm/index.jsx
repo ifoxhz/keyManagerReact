@@ -97,13 +97,13 @@ const EditForm = (props) => {
   return (
     <Spin tip='加载中' spinning={loading}>
       <Form {...layout} form={form} onFinish={save}>
-        <Form.Item label='许可证名称' name='permitname' rules={rules.name}>
-          <Input />
+        <Form.Item label='许可证名称' name='permitname' initialValue={PermitId.permitname} rules={rules.name}>
+          <Input placeholder={PermitId.permitname}/>
         </Form.Item>
-        <Form.Item label='许可证描述' name='permitlabel' rules={rules.name}>
-          <Input />
+        <Form.Item label='许可证描述' name='permitlabel' initialValue={PermitId.permitlabel} rules={rules.name}>
+          <Input placeholder={PermitId.permitlabel}/>
         </Form.Item>
-        <Form.Item label='id' name='id' initialValue={PermitId}  style={{ display: 'none' }}>
+        <Form.Item label='id' name='id' initialValue={PermitId.id}  style={{ display: 'none' }}>
           <Input />
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
