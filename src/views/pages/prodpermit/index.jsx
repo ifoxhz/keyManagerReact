@@ -40,10 +40,8 @@ const KeyUploader = () => {
   
 function ProductkeyItem ({prodkeyText}) {
 
-  console.log("ProductkeyItem:",prodkeyText)
   const result = Papa.parse(prodkeyText)
   const items = result.data
-  console.log("ProductkeyItem  pare items:",items)
 
   return (
     <>
@@ -71,7 +69,6 @@ const ProdPermit = () => {
     const editRecord = useSelector((state) => {
        return state.get("editRecord")
     }); // 从 Redux store 获取数据
-    console.log("useSelector::::",editRecord)
     const editItem = editRecord.editItem
     console.log("useSelector editItem", editItem)
     // const dispatch = useDispatch(); // 获取 dispatch 函数

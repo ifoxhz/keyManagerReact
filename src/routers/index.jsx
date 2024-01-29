@@ -64,11 +64,11 @@ const ProdPermit = lazy(() =>
   )
 )
 
-const FakeDevice = lazy(() =>
-  import(
-    /*webpackChunkName: 'table-pages' */ '@/views/pages/fake'
-  )
-)
+// const FakeDevice = lazy(() =>
+//   import(
+//     /*webpackChunkName: 'table-pages' */ '@/views/pages/fake'
+//   )
+// )
 
 const CredentTable = lazy(() =>
   import(
@@ -86,22 +86,22 @@ const routes = [
     title: '产品管理',
     icon: <HomeFilled />,
   },
-  {
-    path: '/credent',
-    exact: true,
-    name: 'credent',
-    component: CredentTable,
-    title: '证书查询',
-    icon: <ExclamationCircleFilled />
-  },
-  {
-    path: '/fake',
-    exact: true,
-    name: 'fakedevice',
-    component: FakeDevice,
-    title: '仿真拉取',
-    icon: <ExclamationCircleFilled />
-  },
+  // {
+  //   path: '/credent',
+  //   exact: true,
+  //   name: 'credent',
+  //   component: CredentTable,
+  //   title: '证书查询',
+  //   icon: <ExclamationCircleFilled />
+  // },
+  // {
+  //   path: '/fake',
+  //   exact: true,
+  //   name: 'fakedevice',
+  //   component: FakeDevice,
+  //   title: '仿真拉取',
+  //   icon: <ExclamationCircleFilled />
+  // },
   // {
   //   path: '/general',
   //   title: '通用',

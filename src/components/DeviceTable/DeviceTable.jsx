@@ -78,16 +78,20 @@ const DeviceTable = (props, ref) => {
 
     let  serverUrl = url + "/get" + `?pageSize=${query.row}&offset=${query.row*(query.page-1)}`
 
-
+    serverUrl += `&permitProdId=${options.permitProdId}`
     serverUrl += options.permitname ? `&permitname=${options.permitname}`:""
     
-    serverUrl += options.deviceid ? `&deviceid=${options.deviceid}`:""
+    serverUrl += options.cid ? `&cid=${options.cid}`:""
 
-    serverUrl += options.permitdevicestatus ? `&permitdevicestatus=${options.permitdevicestatus}`:""
+    // serverUrl += options.usedflag ? `&usedflag=${options.usedflag}`:""
+
+    if(options.usedflag !== undefined ){
+      serverUrl += `&usedflag=${options.usedflag}`
+    }
 
     serverUrl += options.productionline ? `&productionline=${options.productionline}`:""
 
-    console.log("DeviceTable fetchData url" ,serverUrl)
+    console.log("DeviceTable fetchData url is" ,serverUrl)
     try {
       const response = await fetch(serverUrl, {
         method: 'GET',

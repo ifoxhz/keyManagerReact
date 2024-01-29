@@ -31,14 +31,14 @@ const PermitTable = (props) => {
       title: '总额',
       dataIndex: 'permittotal'
     },
-    {
-      title: '未拉取',
-      dataIndex: 'permitbalance'
-    },
-    {
-      title: '已拉取',
-      dataIndex: 'permitpullcount'
-    },
+    // {
+    //   title: '未拉取',
+    //   dataIndex: 'permitbalance'
+    // },
+    // {
+    //   title: '已拉取',
+    //   dataIndex: 'permitpullcount'
+    // },
     {
       title: '已下载',
       dataIndex: 'permitusedcount'

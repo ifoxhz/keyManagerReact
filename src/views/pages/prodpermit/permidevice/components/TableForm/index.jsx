@@ -27,12 +27,12 @@ const TableForm = (props) => {
       },
       body: JSON.stringify(values)
      })
-      .then( (response) =>{
+      .then( (response) => {
         if (response.status === 200) {
           console.log("permit create 200")
           setStatus(1)
         } else {
-          console.log("permit create :",response.status)
+          console.log("permit create :",response.status,response.json())
           notification.error({
             message: '证书通知',
             description: `创建产品失败，请检查输入的产品参数:${values}`,

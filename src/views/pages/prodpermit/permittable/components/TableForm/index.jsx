@@ -32,21 +32,22 @@ const TableForm = (props) => {
       },
       body: JSON.stringify(values)
      })
-      .then( (response) =>{
-        console.log(response.status,response)
+      .then(async (response) =>{
+
         if (response.status === 200) {
           setStatus(1)
         } else {
+          const errJson = await response.json()
+          const errMsg = `创建证书失败，请检查输入的产品参数！错误：${errJson.resultMsg}`
           notification.error({
             message: '证书通知',
-            description: `创建产品失败，请检查输入的产品参数:${values}`,
+            description: errMsg
           });
           setStatus(0)
         }
         setLoading(false)
         })
       .catch( (err) =>{
-        console.log(err)
         setLoading(false)
         setStatus(0)
         notification.error({
@@ -54,6 +55,7 @@ const TableForm = (props) => {
           description: `创建产品失败，后台服务异常`,
         });
       })
+
     setLoading(false)
     const { resetFields } = form;
     resetFields()

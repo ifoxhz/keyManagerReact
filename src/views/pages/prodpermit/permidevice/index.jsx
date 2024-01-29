@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
-import { Form, Input, Button, Modal, Row, Col,Select, Space,notification } from 'antd'
+import { Form, Input, Button, Modal, Row, Col,Select, Space,notification,message } from 'antd'
 import { PlusOutlined, RedoOutlined } from '@ant-design/icons'
 import { DeviceTable } from '_c'
 import * as Styled from './style'
@@ -11,7 +11,9 @@ const { Option } = Select;
 const url = "/api/permitdevice"
 
 const PermitDevice = (props) => {
-  const {editItem} = props
+  let {editItem} = props
+  const [form] = Form.useForm();
+
   const { isMobile } = useSelector(
     (state) => ({
       isMobile: state.getIn(['base', 'isMobile'])
@@ -19,30 +21,42 @@ const PermitDevice = (props) => {
     shallowEqual
   )
 
+
+  const editRecord = useSelector((state) => {
+    console.log(" permitdevice useSelector, origin editItem:", editItem)
+  
+    return state.get("editRecord")
+  }); // 从 Redux store 获取数据
+ 
+ 
   const columns = [
     {
       title: '设备号',
-      dataIndex: 'permitdevice'
+      dataIndex: 'cid'
     },
     {
       title: '许可证名称',
-      dataIndex: 'permitname'
+      render: () => {editItem.permitname}
     },
     {
       title: '状态',
-      dataIndex: 'permitstatus'
+      render: (text, record) => {
+        return (record.usedflag ? "已下载":"未下载" )
+      }
     },
     {
       title: '异常描述',
-      dataIndex: 'permitedesc'
+      dataIndex: 'baklabel'
     },
     {
       title: '创建时间',
-      dataIndex: 'createtime'
+      dataIndex: 'createdAt',
+      render: (date) => {return (new Date(date)).toLocaleString('zh-CN')}
     },
     {
       title: '最近操作时间',
-      dataIndex: 'operatetime'
+      dataIndex: 'updatedAt',
+      render: (date) => {return (new Date(date)).toLocaleString('zh-CN')}
     },
   ]
   
@@ -70,86 +84,33 @@ const PermitDevice = (props) => {
     // setDelRecord(record);
     // setModalvisible(true);
     console.log("PermitDevice onFinish",values)
+    console.log("PermitDevice onFinish",editItem)
+
+    if (values.permitname === undefined && values.cid === undefined){
+
+      message.info('许可证，或者设备号不能同时为空！');
+      return
+    }
+
+    values.permitProdId = editItem.id
 
     tableRef.current.refresh(values)
 
+    form.resetFields()
+
   };
 
-  // const fetchData = async (record) => {
-  //   console.log(" permitdevice fetch Data",record)
-  //   setLoading(true)
 
-  //   let  serverUrl = url + "/get" + `?pageSize=${query.row}&offset=${query.row*(query.page-1)}`
-    
-  //   serverUrl = serverUrl + record.permitname ?`&permitname=${record.permitname}`:null
-  //   serverUrl = serverUrl + record.permitstatus ?`&permitstatus=${record.permitstatus}`:null
-  //   serverUrl = serverUrl + record.deviceid ?`&permitname=${record.deviceid}`:null
-  //   serverUrl = serverUrl + record.productionline ?`&permitname=${record.productionline}`:null
-
-  //   console.log("permitdevice url" ,serverUrl)
-  //   try {
-  //     const response = await fetch(serverUrl, {
-  //       method: 'GET',
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       },
-  //     })
-  //     const result = await response.json();
-  //     // const reData = JSON.parse(result)
-  //     let reData = result
-
-  //     console.log("reData",reData)
-        
-  //     setLoading(false)
-  //     setData({
-  //       ...query,
-  //       count: reData.Data.count,
-  //       list: reData.Data.list
-  //     })
-  //     if (selectTotalKeys[query.page]) {
-  //       let curRow = selectTotalKeys[query.page]
-  //       let arr = []
-  //       reData.list.forEach((item) => {
-  //         if (curRow.indexOf(item.id) !== -1) {
-  //           arr.push(item.id)
-  //         }
-  //       })
-  //       setSelectTotalKeys({
-  //         ...selectTotalKeys,
-  //         [query.page]: [...arr]
-  //       })
-  //   }
-  // } catch (error) {
-  //     setLoading(false)
-  //     setData({
-  //       ...query,
-  //       count: dataDeafaul.length,
-  //       list: dataDeafaul
-  //     })
-  //   }
-  // }
-
-  const handleConfirmDelete = () => {
-    // const newData = data.filter((item) => item.id !== selectedRecord.id);
-    console.log("execute permit delete",DelRecord)
-    tableRef && tableRef.current.del(DelRecord,"/api/permitdevice/delete")
-    // setData(newData);
-    setModalvisible(false);
-  };
-
-  const handleCancelDelete = () => {
-    setModalvisible(false);
-  };
-
-  const getPermitNameList = async()=> {
+  const getPermitNameList = async(product)=> {
     try{
-     const response = await  fetch("/api/permit/namelist", {
+      const url = `/api/permit/namelist?permitProdId=${product.id}`
+      const response = await  fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
-        },
+        }
        })
-      if (response.status === 200) {
+        if (response.status === 200) {
         const result = await response.json()
         console.log("SelectOptions data",result)
         const tmpOpt = result.Data.map((item)=>{
@@ -169,19 +130,29 @@ const PermitDevice = (props) => {
     }
   }
   useEffect(()=>{
-    getPermitNameList()
-  },[])
+    getPermitNameList(editItem)
+  },[editItem])
 
   useEffect(()=>{
     console.log("refresh select 组件")
   },[nameOptions])
 
   
+  useEffect(()=>{
+    editItem = editRecord.editItem
+    console.log("editRecord refresh editItem",editItem)
+  },[editRecord])
+
+
+  let formInit = {
+    permitProdId: editItem.permitProdId
+  };
 
   return (
+
     <Styled.Wrap>
       <Styled.Header>
-        <Form className={{ 'header-form': true, 'not-flex': isMobile }} onFinish={onFinish}>
+        <Form form={form} className={{ 'header-form': true, 'not-flex': isMobile }} onFinish={onFinish} >
         <Row gutter={16}>
         <Col span={12}>
           <Form.Item  name="permitname">
@@ -189,13 +160,13 @@ const PermitDevice = (props) => {
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item  name="permitstatus">
-            <Select placeholder="请选择状态"  options={[{value:"Used",label:"已使用"},{value:"Unused",label:"未使用"}]}>
+          <Form.Item  name="usedflag">
+            <Select placeholder="请选择状态"  allowClear  options={[{value:true,label:"已下载"},{value:false,label:"未下载"}]}>
             </Select>
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item name="deviceid" >
+          <Form.Item name="cid" >
             <Input placeholder="请输入设备号" />
           </Form.Item>
         </Col>

@@ -10,12 +10,10 @@ import { PageLoading } from '_c'
 
 
 const RouteWrap = (WrapComponent, props) => {
-  console.log("RouteWrap:",window.localStorage.islogin  )
+
   if (window.localStorage.islogin === '0' ){
-    console.log("RouteWrap Redirect")
     return (<Redirect to="/login" />)
   }else{
-    console.log("RouteWrap no Redirect")
     return (
       <div className='page'>
         <Suspense fallback={<PageLoading hideLeft />}>
