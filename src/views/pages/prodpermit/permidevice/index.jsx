@@ -22,43 +22,9 @@ const PermitDevice = (props) => {
   )
 
 
-  const editRecord = useSelector((state) => {
-    console.log(" permitdevice useSelector, origin editItem:", editItem)
-  
+  const editRecord = useSelector((state) => {  
     return state.get("editRecord")
   }); // 从 Redux store 获取数据
- 
- 
-  const columns = [
-    {
-      title: '设备号',
-      dataIndex: 'cid'
-    },
-    {
-      title: '许可证名称',
-      render: () => {editItem.permitname}
-    },
-    {
-      title: '状态',
-      render: (text, record) => {
-        return (record.usedflag ? "已下载":"未下载" )
-      }
-    },
-    {
-      title: '异常描述',
-      dataIndex: 'baklabel'
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'createdAt',
-      render: (date) => {return (new Date(date)).toLocaleString('zh-CN')}
-    },
-    {
-      title: '最近操作时间',
-      dataIndex: 'updatedAt',
-      render: (date) => {return (new Date(date)).toLocaleString('zh-CN')}
-    },
-  ]
   
   const[nameOptions,setNameOptions] = useState([])
 
@@ -73,18 +39,7 @@ const PermitDevice = (props) => {
 
   const tableRef = useRef(null)
 
-  useEffect(() => {}, [])
-
-  const handleDelete = (record) => {
-    setDelRecord(record);
-    setModalvisible(true);
-  };
-
   const onFinish = (values) => {
-    // setDelRecord(record);
-    // setModalvisible(true);
-    console.log("PermitDevice onFinish",values)
-    console.log("PermitDevice onFinish",editItem)
 
     if (values.permitname === undefined && values.cid === undefined){
 
@@ -140,13 +95,10 @@ const PermitDevice = (props) => {
   
   useEffect(()=>{
     editItem = editRecord.editItem
-    console.log("editRecord refresh editItem",editItem)
+    tableRef.current.cleanDataSource()
+    console.log("useEffect refresh editItem",editItem)
   },[editRecord])
 
-
-  let formInit = {
-    permitProdId: editItem.permitProdId
-  };
 
   return (
 
@@ -170,11 +122,11 @@ const PermitDevice = (props) => {
             <Input placeholder="请输入设备号" />
           </Form.Item>
         </Col>
-        <Col span={12}>
+        {/* <Col span={12}>
           <Form.Item name="productionline" >
             <Input placeholder="请输入产线号" />
           </Form.Item>
-        </Col>
+        </Col> */}
       </Row>
           <div className='item-wrap'>
           <Space>
@@ -226,7 +178,7 @@ const PermitDevice = (props) => {
         </Modal>
            */}
         <DeviceTable
-          columns={columns}
+          // columns={columns}
           ref={tableRef}
           checked
           url='/api/permitdevice'

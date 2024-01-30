@@ -12,8 +12,7 @@ const layout = {
 
 const cvsCheck =(prodkeyText) => {
     
-  const cvsKey = ['privateKey','appId','model','productType','security']
-  console.log("ProductkeyItem:",prodkeyText)
+  const cvsKey = ['appId','model','productType','security']
   const result = Papa.parse(prodkeyText)
   // 获取键值对
   const keyValuePairs = result.data.reduce((reduceKeyPair, item) => {
@@ -23,19 +22,20 @@ const cvsCheck =(prodkeyText) => {
       return reduceKeyPair;
   }, {});
 
-  console.log("keyValuePairs  pare items:",keyValuePairs)
   return  cvsKey.find((key) => !keyValuePairs.hasOwnProperty(key))
 }
 
 
-const KeyUploader = ({upData}) => {
+const KeyUploader = (props) => {
+  const {upData,setOneFile} = props
   const [fileContent, setFileContent] = useState(null);
 
   const handlebeforeUpload = (file) => {
     console.log("handlebeforeUpload","读取文件",file)
+    // setOneFile([file])
     const reader = new FileReader();
     reader.onload = (e) => {
-        console.log("read file end:",e.target.result)
+        console.log("read file end:")
         const cvsRes =  cvsCheck(e.target.result)
         if (cvsRes){
           console.log("cvs file lost:",cvsRes)
@@ -59,7 +59,7 @@ const KeyUploader = ({upData}) => {
 
   return (
     <>
-      <Upload action=""  multiple={false}  beforeUpload={handlebeforeUpload}>
+      <Upload action="" maxCount={1}  multiple={false}  beforeUpload={handlebeforeUpload}>
         <Button>选择文件</Button>
       </Upload>
 
@@ -87,7 +87,6 @@ return (
 
 
 function ProductkeyForm ({items}) {
-
 
   return (
     <div>
@@ -119,14 +118,11 @@ const TableForm = (props) => {
   const [prodKey, setProdKey] = useState(null)
   const [form] = Form.useForm()
   // const formRef = useRef(null);
-
-
-
+  const [oneFile, setOneFile] = useState([])
 
   const cvsCheck =(prodkeyText) => {
     
-    const cvsKey = ['privateKey','appId','model','productType','security']
-    console.log("ProductkeyItem:",prodkeyText)
+    const cvsKey = ['appId','model','productType','security']
     const result = Papa.parse(prodkeyText)
     // 获取键值对
     const keyValuePairs = result.data.reduce((reduceKeyPair, item) => {
@@ -136,13 +132,13 @@ const TableForm = (props) => {
         return reduceKeyPair;
     }, {});
 
-    console.log("keyValuePairs  pare items:",keyValuePairs)
+    console.log("keyValuePairs  pare items:")
     return  cvsKey.find((key) => !keyValuePairs.hasOwnProperty(key))
   }
 
 
   const handleSetProdKey = (key) => {
-    console.log("call set form key",key)
+    console.log("call set form key")
     const lostKey = cvsCheck(key)
     if(lostKey){
       // const text = `产品密钥文件缺失参数:${lostKey}`
@@ -253,7 +249,6 @@ const TableForm = (props) => {
   }
 
   useEffect(() => {
-
     if (status === 1) {
       setStatus(0)
       onConfirm()
@@ -286,7 +281,7 @@ const TableForm = (props) => {
           </Radio.Group>
         </Form.Item> 
         <Form.Item label='产品密钥' name='productinfo'>
-          <KeyUploader  upData={handleSetProdKey} />
+          <KeyUploader setOneFile={setOneFile}  upData={handleSetProdKey} />
         </Form.Item>
         <Form.Item name="productkey" >
           {/* <Input  value={prodKey}  disabled /> */}

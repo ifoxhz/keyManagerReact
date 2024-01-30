@@ -24,7 +24,8 @@ import { useSelector} from 'react-redux'
 const dataDeafaul =[]
 
 const DeviceTable = (props, ref) => {
-  const { checked, url, formoptions} = props
+  const { checked, url} = props
+
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
   const [selectTotalKeys, setSelectTotalKeys] = useState({})
   const [data, setData] = useState({
@@ -34,13 +35,55 @@ const DeviceTable = (props, ref) => {
   })
   const [loading, setLoading] = useState(true)
   const [query, setQuery] = useState({
-    row: 10,
+    row: 50,
     page: 1
   })
 
-//   const  CurRecord = useSelector((state) => {
-//     return state.get("editRecord")
-//  }); // 从 Redux store 获取数据
+  const [curPermit, setCurPermit] = useState(null)
+  const [lastOptions, setLastOptions] = useState(null)
+
+  // const  curProduct = useSelector((state) => {
+  //   return state.get("editRecord")
+  // }); // 从 Redux store 获取数据
+
+
+const columns = [
+  {
+    title: '设备号',
+    dataIndex: 'cid'
+  },
+  {
+    title: '许可证名称',
+    // dataIndex:'permitname',
+    key:'colpermitname',
+    render: (_,record) => {
+      if (record.hasOwnProperty("permitname")){
+        return (record.permitname)
+      }else{
+        return (curPermit)}
+      }
+  },
+  {
+    title: '状态',
+    render: (text, record) => {
+      return (record.usedflag ? "已下载":"未下载" )
+    }
+  },
+  {
+    title: '异常描述',
+    dataIndex: 'baklabel'
+  },
+  {
+    title: '创建时间',
+    dataIndex: 'createdAt',
+    render: (date) => {return (new Date(date)).toLocaleString('zh-CN')}
+  },
+  {
+    title: '最近操作时间',
+    dataIndex: 'updatedAt',
+    render: (date) => {return (new Date(date)).toLocaleString('zh-CN')}
+  },
+]
 
   const onSelectChange = (currSelectedRowKeys, selectedRow) => {
     if (
@@ -68,6 +111,7 @@ const DeviceTable = (props, ref) => {
 
   const fetchData = async (options) => {
 
+
     console.log("DeviceTable fetch Data",options)
     if(!options){
       console.log("DeviceTable return ")
@@ -75,6 +119,8 @@ const DeviceTable = (props, ref) => {
       return 
     }
     setLoading(true)
+    setCurPermit(options.permitname)
+    setLastOptions(options)
 
     let  serverUrl = url + "/get" + `?pageSize=${query.row}&offset=${query.row*(query.page-1)}`
 
@@ -146,7 +192,7 @@ const DeviceTable = (props, ref) => {
   }
 
   useEffect(() => {
-    fetchData()
+    fetchData(lastOptions)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query])
 
@@ -161,34 +207,41 @@ const DeviceTable = (props, ref) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectTotalKeys])
 
-  const delRow = async (row, api) => {
-    console.log("delete row",row)
-    try {
-      let response = await fetch(api, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({id:row.id})
-      })
-      if (response.status === 200){
-        console.log("succeed to delete",response.json())
-        notification.success({ message: '删除成功' })
-      }else{
-        notification.error({ message: '删除失败,错误编码：' + response.status})
-      }
-
-    }catch(err){
-      console.log("failed to delete",err)
-      notification.error({ message: '删除失败:', err })
-    }
-    console.log("refresh data again")
-    fetchData()
+  const cleanTableSource = () =>{
+    setData({
+      count: 0,
+      page: 1,
+      list: []
+    })
   }
+  // const delRow = async (row, api) => {
+  //   console.log("delete row",row)
+  //   try {
+  //     let response = await fetch(api, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify({id:row.id})
+  //     })
+  //     if (response.status === 200){
+  //       console.log("succeed to delete",response.json())
+  //       notification.success({ message: '删除成功' })
+  //     }else{
+  //       notification.error({ message: '删除失败,错误编码：' + response.status})
+  //     }
+
+  //   }catch(err){
+  //     console.log("failed to delete",err)
+  //     notification.error({ message: '删除失败:', err })
+  //   }
+  //   console.log("refresh data again")
+  //   fetchData()
+  // }
 
   useImperativeHandle(ref, () => ({
     refresh: fetchData,
-    del: delRow
+    cleanDataSource: cleanTableSource
   }))
 
   return (
@@ -210,6 +263,7 @@ const DeviceTable = (props, ref) => {
       <Table
         /*{rowSelection={rowSelection}}*/
         {...props}
+        columns={columns}
         loading={loading}
         dataSource={data.list}
         rowKey={(row) => row.id || row._id || row.key}
