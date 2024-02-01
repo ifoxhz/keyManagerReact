@@ -13,12 +13,12 @@ import React, {
   useImperativeHandle
 } from 'react'
 import { log } from '@ferrydjing/utils'
-import { Table, Button, notification } from 'antd'
-import { InfoCircleFilled } from '@ant-design/icons'
+import { Table, Button,Space } from 'antd'
+
 import * as styled from './styled'
 import * as http from '@/api'
-import { stringify } from 'qs'
-import { useSelector} from 'react-redux'
+// import { saveAs } from 'file-saver';
+// import { useSelector} from 'react-redux'
 
 
 const dataDeafaul =[]
@@ -46,6 +46,23 @@ const DeviceTable = (props, ref) => {
   //   return state.get("editRecord")
   // }); // 从 Redux store 获取数据
 
+  const handleDownload = (record) =>{
+    
+    const saveAs = (blob, fileName) => {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+    
+    console.log("下载：",record)
+    const text = record.credential;
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    saveAs(blob, '证书原始文件.txt');
+  }
+
 
 const columns = [
   {
@@ -57,8 +74,8 @@ const columns = [
     // dataIndex:'permitname',
     key:'colpermitname',
     render: (_,record) => {
-      if (record.hasOwnProperty("permitname")){
-        return (record.permitname)
+      if (record.hasOwnProperty("Permit")){
+        return (record.Permit.permitname)
       }else{
         return (curPermit)}
       }
@@ -82,6 +99,15 @@ const columns = [
     title: '最近操作时间',
     dataIndex: 'updatedAt',
     render: (date) => {return (new Date(date)).toLocaleString('zh-CN')}
+  },
+  {
+    title: '操作',
+    key: 'action',
+    render: (text, record) => (
+      <Space size="middle">
+       <Button onClick={() => handleDownload(record)} size="middle">下载</Button>
+      </Space>
+    ),
   },
 ]
 
@@ -135,7 +161,7 @@ const columns = [
       serverUrl += `&usedflag=${options.usedflag}`
     }
 
-    serverUrl += options.productionline ? `&productionline=${options.productionline}`:""
+    serverUrl += options.sn ? `&sn=${options.sn}`:""
 
     console.log("DeviceTable fetchData url is" ,serverUrl)
     try {
@@ -145,6 +171,11 @@ const columns = [
           'Content-Type': 'application/json'
         },
       })
+
+      if(response.status !== 200){
+        throw new Error("查询出错")
+      }
+
       const result = await response.json();
       // const reData = JSON.parse(result)
 

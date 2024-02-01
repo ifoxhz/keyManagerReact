@@ -41,9 +41,9 @@ const PermitDevice = (props) => {
 
   const onFinish = (values) => {
 
-    if (values.permitname === undefined && values.cid === undefined){
+    if (values.permitname === undefined && values.cid === undefined && values.sn === undefined){
 
-      message.info('许可证，或者设备号不能同时为空！');
+      message.info('许可证，设备号或者SN号不能同时为空！');
       return
     }
 
@@ -122,11 +122,11 @@ const PermitDevice = (props) => {
             <Input placeholder="请输入设备号" />
           </Form.Item>
         </Col>
-        {/* <Col span={12}>
-          <Form.Item name="productionline" >
-            <Input placeholder="请输入产线号" />
+        <Col span={12}>
+          <Form.Item name="sn" >
+            <Input placeholder="请输入证书SN号" />
           </Form.Item>
-        </Col> */}
+        </Col>
       </Row>
           <div className='item-wrap'>
           <Space>
