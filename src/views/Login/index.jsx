@@ -2,7 +2,6 @@ import React, { memo, useEffect } from 'react'
 import { Redirect } from 'react-router-dom';
 import { useSelector, shallowEqual } from 'react-redux'
 import { Normal, Mobile } from './components'
-import { notification } from 'antd'
 import * as Styled from './style'
 
 import {useHistory } from 'react-router-dom';

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Button, Input, message } from 'antd'
+import { Form, Button, Input, message,Tag } from 'antd'
 import * as Styled from './style'
 import useLogin from '../../../../hook/useLogin'
 
@@ -49,6 +49,10 @@ const Login = (props) => {
           </Button>
         </Form.Item>
       </Form>
+      <div style={{ textAlign: 'center' }}>
+        <Tag>KMS 2.0</Tag>
+      </div>
+      
     </Styled.Wrap>
   )
 }

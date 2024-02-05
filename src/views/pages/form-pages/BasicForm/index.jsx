@@ -164,8 +164,8 @@ const BasicForm = (props) => {
             initialValue={1}
           >
             <Radio.Group>
-              <Radio value={0}>管理员</Radio>
-              <Radio value={1}>操作员</Radio>
+              <Radio value={100}>管理员</Radio>
+              <Radio value={200}>操作员</Radio>
             </Radio.Group>
           </Form.Item>
           <Form.Item label='邮箱' name='email' rules={rules.email}>

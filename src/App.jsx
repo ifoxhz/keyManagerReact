@@ -8,6 +8,8 @@ import { PageLoading } from '_c'
 
 import { useLocation, useHistory, Link } from 'react-router-dom'
 
+import IdleTimer from './common/events'
+
 
 // const PrivateRoute = ({ component: component, ...rest }) => {
 //   const isAuthenticated = window.localStorage.islogin
@@ -97,6 +99,7 @@ const App = () => {
   return (
     <Suspense fallback={<PageLoading />}>
       <Router>
+      <IdleTimer />
         <Switch>
           <Route path='/' exact render={() => {
               return (window.localStorage.islogin === '1' ? <Redirect to='/index' />:<Redirect to='/login' />) 
