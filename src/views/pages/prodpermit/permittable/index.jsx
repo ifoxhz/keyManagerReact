@@ -66,6 +66,7 @@ const PermitTable = (props) => {
         <Space size="middle">
          <Button onClick={() => handleDelete(record)} size="middle">删除</Button>
          <Button onClick={() => handleEdit(record)} size="middle">编辑</Button>
+         <Button onClick={() => handlePullStatus(record)} size="middle">状态</Button>
         </Space>
       ),
     },
@@ -94,6 +95,27 @@ const PermitTable = (props) => {
     setEditRecord(record);
     setEditVisible(true);
     console.log("edit permit")
+  };
+
+  const handlePullStatus = (record) => {
+  
+    const saveAs = (blob, fileName) => {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    console.log("handlePullStatus",record)
+    let text = `许可证：${record.permitname}\n\r`
+    text += `总额：${record.permittotal}\n\r`
+    text += `成功拉取个数：${record.permitpullcount}\n\r`
+    text += `失败个数：${record.permiterrorcount}\n\r`
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    saveAs(blob, 'info.txt')
+
   };
 
   const handleConfirmDelete = () => {

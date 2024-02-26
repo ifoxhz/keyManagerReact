@@ -49,10 +49,6 @@ const Login = (props) => {
           </Button>
         </Form.Item>
       </Form>
-      <div style={{ textAlign: 'center' }}>
-        <Tag>KMS 2.0</Tag>
-      </div>
-      
     </Styled.Wrap>
   )
 }

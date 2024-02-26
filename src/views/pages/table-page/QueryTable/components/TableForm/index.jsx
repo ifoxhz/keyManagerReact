@@ -272,6 +272,7 @@ const TableForm = (props) => {
             <Option value="WP_LX100">WP_LX100</Option>
             <Option value="ZX9660">ZX9660</Option>
             <Option value="CIU98">CIU98</Option>
+            <Option value="HSC32I3">HSC32I3</Option>
           </Select>
         </Form.Item>
         <Form.Item label="是否加密" initialValue="no"  name="isencryp">

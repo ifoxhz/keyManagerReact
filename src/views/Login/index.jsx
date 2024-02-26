@@ -7,7 +7,7 @@ import * as Styled from './style'
 import {useHistory } from 'react-router-dom';
 
 const Login = (props) => {
-  console.log("first login",props)
+
   const { isAuthenticated} = props
   const { isMobile } = useSelector(
     (state) => ({

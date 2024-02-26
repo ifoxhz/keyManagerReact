@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Spin } from 'antd'
+import { Spin,Tag } from 'antd'
 import * as Styled from './style'
 import { Login, Register } from './components'
 
@@ -14,6 +14,10 @@ const list = [
   }
 ]
 
+const largeTagStyle = {
+  fontSize: '20px', // 设置标签的大字体大小
+};
+
 const Normal = (props) => {
   console.log("Normal",props)
   const [type, setType] = useState('login')
@@ -22,7 +26,13 @@ const Normal = (props) => {
   return (
     <Styled.Wrap>
       <Spin spinning={loading}>
+      <div style={{ textAlign: 'center' }}>
+      <Styled.Header>
+        <Tag bordered={false} style={largeTagStyle}>安全生产KMS系统v2.0</Tag>
+      </Styled.Header>
+      </div>
         <Styled.Header>
+ 
           {list.map((item) => (
             <div
               className={type === item.type ? 'active item' : 'item'}
