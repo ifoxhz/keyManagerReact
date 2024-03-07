@@ -66,6 +66,7 @@ const useLogin = (props) => {
             console.log("Login ok")
             // setIsAuthenticated(true)
             window.localStorage.islogin = '1'
+            window.localStorage.sessionId = data.Session
 
             setLoading(false)
             setStatus(1)
