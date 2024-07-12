@@ -1,5 +1,5 @@
 # 使用官方的 Nginx 镜像作为基础镜像
-FROM nginx:1.25.3
+FROM nginx:latest
 
 #安装需要的工具包
 

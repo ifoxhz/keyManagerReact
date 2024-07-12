@@ -56,7 +56,16 @@ const PermitTable = (props) => {
     {
       title: '状态',
       render: (text, record) => {
-        return ((record.permittotal === record.permitpullcount)? "可用":"创建中")
+        if (record.permiterrorcount === 100) {
+          return "余额已满，请联系相关人员!";
+        }else if (record.permiterrorcount === 10){
+          return "从上游服务器拉取错误太多，暂停！请检查并重启服务！"
+        } 
+        else if (record.permittotal === record.permitpullcount) {
+          return "可用";
+        } else {
+          return "创建中";
+        }
       }
     },
     {
