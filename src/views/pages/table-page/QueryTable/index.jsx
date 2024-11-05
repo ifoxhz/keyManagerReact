@@ -31,15 +31,15 @@ const QueryTable = (props) => {
       dataIndex: 'chipmodel'
     },
     {
-      title: '设备总量',
+      title: '创建证书总量',
       render: (text, record) => {
         return (record.devicetotal ? record.devicetotal : 0)
       }
     },
     {
-      title: '设备余额',
+      title: '已下载证书总数',
       render: (text, record) => {
-        return (record.devicetotal - record.devicebalance)
+        return (record.devicebalance ? record.devicebalance : 0)
       }
     },
     {
@@ -54,6 +54,7 @@ const QueryTable = (props) => {
         <Space size="middle">
          <Button onClick={() => handleDelete(record)} size="middle">删除</Button>
          <Button onClick={() => handleEdit(record)} size="middle">编辑</Button>
+         <Button onClick={() => handleRemainingQuery(record)} size="middle">余额</Button>
         </Space>
       ),
     },
@@ -66,6 +67,10 @@ const QueryTable = (props) => {
   const [Modalvisible, setModalvisible] = useState(false); // 控制模态框显示与隐藏
   const [DelRecord, setDelRecord] = useState(null); // 当前选中的行数据
   const [permitVisible, setPermitVisible] = useState(false)
+
+  const [loading, setLoading] = useState(false);
+  const [isRemainingVisible, setRemainingVisible] = useState(false);
+  const [remainingData, setRemainingData] = useState(null);
 
   // const [EditRecord,setEditRecord] =useState(null)
 
@@ -101,10 +106,40 @@ const QueryTable = (props) => {
     // setModalvisible(true);
   };
 
+  const handleRemainingQuery = async (record) => {
+      setLoading(true);
+      setRemainingVisible(true);
+
+      try {
+        // const response = await fetch('https://your-api-endpoint.com/product/get');
+        const response = await fetch('/api/product/getRemainingPermit', 
+          { method: 'POST', body: JSON.stringify({chipmodel:record.chipmodel}) });
+        if (!response.ok) {
+          setRemainingData('Network response was not ok');
+          setLoading(false);
+          return
+        }
+        const result = await response.json();
+        setRemainingData(result);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setRemainingData({ error: 'Failed to load data' });
+        setLoading(false);
+      }
+    };
+
+ 
+
   // useEffect((editRecord) => {
   //   dispatch({type: 'SET_PROD_EDIT_RECORD', payload: {items: [editRecord]}});
   // }, [EditRecord])
 
+   
+  const handleOk = () => {
+    setRemainingVisible(false);
+    setRemainingData(null); // Clear the data when closing the modal
+  };
 
   const handleConfirmDelete = () => {
     // const newData = data.filter((item) => item.id !== selectedRecord.id);
@@ -242,6 +277,23 @@ const QueryTable = (props) => {
         ) : null}
       </Modal>
 
+      <Modal
+        title="Remaining data"
+        visible={isRemainingVisible}
+        onOk={handleOk}
+        footer={[
+          <Button key="ok" type="primary" onClick={handleOk}>
+            OK
+          </Button>,
+        ]}
+        centered
+      >
+        {loading ? (
+          <><p>加载中</p></>
+        ) : (
+          <p>{remainingData ? JSON.stringify(remainingData) : 'No data available'}</p>
+        )}
+      </Modal>
 
     </Styled.Wrap>
   )

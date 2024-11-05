@@ -35,16 +35,16 @@ const PermitTable = (props) => {
     //   title: '未拉取',
     //   dataIndex: 'permitbalance'
     // },
+    {
+      title: '已拉取(KAAS)',
+      dataIndex: 'permitpullcount'
+    },
     // {
-    //   title: '已拉取',
-    //   dataIndex: 'permitpullcount'
+    //   title: '已下载',
+    //   dataIndex: 'permitusedcount'
     // },
     {
-      title: '已下载',
-      dataIndex: 'permitusedcount'
-    },
-    {
-      title: '未下载',
+      title: '未下载(Credential)',
       render: (text, record) => {
         return (record.permitpullcount - record.permitusedcount)
       }
