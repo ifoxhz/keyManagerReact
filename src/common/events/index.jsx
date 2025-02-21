@@ -2,23 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 const IdleTimer = () => {
-  const [timeoutId, setTimeoutId] = useState(null);
+  const timeoutId  = useRef(null);
   const history = useHistory();
 
   const handleUserActivity = () => {
     // 用户有输入活动，重置计时器
-    clearTimeout(timeoutId);
+    clearTimeout(timeoutId.current);
     startTimer();
   };
 
   const startTimer = () => {
-    const id = setTimeout(() => {
+    timeoutId.current = setTimeout(() => {
       // 触发无输入逻辑，跳转到登录页面
       window.localStorage.islogin = '0'
       history.push('/login');
     }, 10 * 60 * 1000); // 10分钟（以毫秒为单位）
 
-    setTimeoutId(id);
   };
 
   useEffect(() => {
